@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RecyclerViewDivider</string>
+
+    <string name="text_linear_layout">LinearLayoutManager</string>
 </resources>
