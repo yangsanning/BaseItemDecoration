@@ -11,19 +11,17 @@ import android.support.annotation.ColorInt;
  */
 public class Line {
 
-    public boolean isShow;
+    private boolean isShow;
 
-    public int color;
-    /**
-     * 单位dp
-     */
-    public float width;
+    private int color;
+
+    private float width;
     /**
      * startSpan,分割线起始的padding（水平方向左为start，垂直方向上为start）
      * endSpan,分割线尾部的padding（水平方向右为end，垂直方向下为end）
      */
-    public float startSpan;
-    public float endSpan;
+    private float startSpan;
+    private float endSpan;
 
     public Line() {
         this(false, 0xff666666, 0, 0, 0);
@@ -55,6 +53,10 @@ public class Line {
 
     public boolean isShow() {
         return isShow;
+    }
+
+    public boolean isHide() {
+        return !isShow();
     }
 
     public void setShow(boolean show) {

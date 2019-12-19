@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.view.View;
 /**
  * @Author yangsanning
  * @ClassName RecyclerViewDivider
- * @Description 一句话概括作用
+ * @Description RecyclerView分割线, 顺时针绘制
  * @Date 2019/4/28
  * @History 2019/4/28 author: description:
  */
@@ -33,150 +32,149 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
+            Divider divider = getDivider(((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition());
+            if (divider == null) {
+                return;
+            }
+            // 绘制左边分割线
+            drawChildLeftVertical(child, c, divider.getLeftLine());
 
-            int itemPosition = ((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition();
+            // 绘制头部分割线
+            drawChildTopHorizontal(child, c, divider.getTopLine());
 
-            Divider divider = getDivider(itemPosition);
+            // 绘制右边分割线
+            drawChildRightVertical(child, c, divider.getRightLine());
 
-            if (divider.getLeftLine().isShow()) {
-                int width = ConvertUtils.dp2px(context, divider.getLeftLine().getWidth());
-                int startSpan = ConvertUtils.dp2px(context, divider.getLeftLine().getStartSpan());
-                int endSpan = ConvertUtils.dp2px(context, divider.getLeftLine().getEndSpan());
-                drawChildLeftVertical(child, c, divider.getLeftLine().getColor(), width, startSpan, endSpan);
-            }
-            
-            if (divider.getTopLine().isShow()) {
-                int width = ConvertUtils.dp2px(context, divider.getTopLine().getWidth());
-                int startSpan = ConvertUtils.dp2px(context, divider.getTopLine().getStartSpan());
-                int endSpan = ConvertUtils.dp2px(context, divider.getTopLine().getEndSpan());
-                drawChildTopHorizontal(child, c, divider.topLine.getColor(), width, startSpan, endSpan);
-            }
-            
-            if (divider.getRightLine().isShow()) {
-                int width = ConvertUtils.dp2px(context, divider.getRightLine().getWidth());
-                int startSpan = ConvertUtils.dp2px(context, divider.getRightLine().getStartSpan());
-                int endSpan = ConvertUtils.dp2px(context, divider.getRightLine().getEndSpan());
-                drawChildRightVertical(child, c, divider.getRightLine().getColor(), width, startSpan, endSpan);
-            }
-            
-            if (divider.getBottomLine().isShow()) {
-                int width = ConvertUtils.dp2px(context, divider.getBottomLine().getWidth());
-                int startSpan = ConvertUtils.dp2px(context, divider.getBottomLine().getStartSpan());
-                int endSpan = ConvertUtils.dp2px(context, divider.getBottomLine().getEndSpan());
-                drawChildBottomHorizontal(child, c, divider.getBottomLine().getColor(), width, startSpan, endSpan);
-            }
+            // 绘制底部分割线
+            drawChildBottomHorizontal(child, c, divider.getBottomLine());
         }
     }
 
-    private void drawChildLeftVertical(View child, Canvas c, @ColorInt int color, int width, int startSpan, int endSpan) {
-        int topSpan;
-        int bottomSpan;
-
-        if (startSpan <= 0) {
-            //padding<0当作==0处理
-            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            topSpan = -width;
-        } else {
-            topSpan = startSpan;
+    /**
+     * 绘制左边分割线
+     */
+    private void drawChildLeftVertical(View child, Canvas c, Line leftLine) {
+        if (leftLine.isHide()) {
+            return;
         }
 
-        if (endSpan <= 0) {
-            bottomSpan = width;
+        float topSpan;
+        float bottomSpan;
+
+        if (leftLine.getStartSpan() <= 0) {
+            // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
+            topSpan = -leftLine.getWidth();
         } else {
-            bottomSpan = -endSpan;
+            topSpan = leftLine.getStartSpan();
+        }
+
+        if (leftLine.getEndSpan() <= 0) {
+            bottomSpan = leftLine.getWidth();
+        } else {
+            bottomSpan = -leftLine.getEndSpan();
         }
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        int top = child.getTop() - params.topMargin + topSpan;
-        int bottom = child.getBottom() + params.bottomMargin + bottomSpan;
-        int right = child.getLeft() - params.leftMargin;
-        int left = right - width;
-        paint.setColor(color);
+        float top = child.getTop() - params.topMargin + topSpan;
+        float bottom = child.getBottom() + params.bottomMargin + bottomSpan;
+        float right = child.getLeft() - params.leftMargin;
+        float left = right - leftLine.getWidth();
+        paint.setColor(leftLine.getColor());
         c.drawRect(left, top, right, bottom, paint);
     }
 
-    private void drawChildTopHorizontal(View child, Canvas c, @ColorInt int color, int width, int startSpan, int endSpan) {
-        int leftSpan;
-        int rightSpan;
+    /**
+     * 绘制头部分割线
+     */
+    private void drawChildTopHorizontal(View child, Canvas c, Line topLine) {
+        if (topLine.isHide()) {
+            return;
+        }
+        float leftSpan;
+        float rightSpan;
 
-        if (startSpan <= 0) {
-            //padding<0当作==0处理
+        if (topLine.getStartSpan() <= 0) {
             //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            leftSpan = -width;
+            leftSpan = -topLine.getWidth();
         } else {
-            leftSpan = startSpan;
+            leftSpan = topLine.getStartSpan();
         }
-        if (endSpan <= 0) {
-            rightSpan = width;
+        if (topLine.getEndSpan() <= 0) {
+            rightSpan = topLine.getWidth();
         } else {
-            rightSpan = -endSpan;
-        }
-
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                .getLayoutParams();
-        int left = child.getLeft() - params.leftMargin + leftSpan;
-        int right = child.getRight() + params.rightMargin + rightSpan;
-        int bottom = child.getTop() - params.topMargin;
-        int top = bottom - width;
-        paint.setColor(color);
-
-        c.drawRect(left, top, right, bottom, paint);
-
-    }
-
-    private void drawChildBottomHorizontal(View child, Canvas c, @ColorInt int color, int width, int startSpan, int endSpan) {
-        int leftSpan;
-        int rightSpan;
-
-        if (startSpan <= 0) {
-            //padding<0当作==0处理
-            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            leftSpan = -width;
-        } else {
-            leftSpan = startSpan;
-        }
-
-        if (endSpan <= 0) {
-            rightSpan = width;
-        } else {
-            rightSpan = -endSpan;
-        }
-
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                .getLayoutParams();
-        int left = child.getLeft() - params.leftMargin + leftSpan;
-        int right = child.getRight() + params.rightMargin + rightSpan;
-        int top = child.getBottom() + params.bottomMargin;
-        int bottom = top + width;
-        paint.setColor(color);
-
-        c.drawRect(left, top, right, bottom, paint);
-
-    }
-    
-    private void drawChildRightVertical(View child, Canvas c, @ColorInt int color, int width, int startSpan, int endSpan) {
-        int topSpan;
-        int bottomSpan;
-
-        if (startSpan <= 0) {
-            //padding<0当作==0处理
-            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            topSpan = -width;
-        } else {
-            topSpan = startSpan;
-        }
-        if (endSpan <= 0) {
-            bottomSpan = width;
-        } else {
-            bottomSpan = -endSpan;
+            rightSpan = -topLine.getEndSpan();
         }
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        int top = child.getTop() - params.topMargin + topSpan;
-        int bottom = child.getBottom() + params.bottomMargin + bottomSpan;
-        int left = child.getRight() + params.rightMargin;
-        int right = left + width;
-        paint.setColor(color);
+        float left = child.getLeft() - params.leftMargin + leftSpan;
+        float right = child.getRight() + params.rightMargin + rightSpan;
+        float bottom = child.getTop() - params.topMargin;
+        float top = bottom - topLine.getWidth();
+        paint.setColor(topLine.getColor());
+        c.drawRect(left, top, right, bottom, paint);
+    }
+
+    /**
+     * 绘制右边分割线
+     */
+    private void drawChildRightVertical(View child, Canvas c, Line rightLine) {
+        if (rightLine.isHide()) {
+            return;
+        }
+
+        float topSpan;
+        float bottomSpan;
+
+        if (rightLine.getStartSpan() <= 0) {
+            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
+            topSpan = -rightLine.getWidth();
+        } else {
+            topSpan = rightLine.getStartSpan();
+        }
+        if (rightLine.getEndSpan() <= 0) {
+            bottomSpan = rightLine.getWidth();
+        } else {
+            bottomSpan = -rightLine.getEndSpan();
+        }
+
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        float top = child.getTop() - params.topMargin + topSpan;
+        float bottom = child.getBottom() + params.bottomMargin + bottomSpan;
+        float left = child.getRight() + params.rightMargin;
+        float right = left + rightLine.getWidth();
+        paint.setColor(rightLine.getColor());
+        c.drawRect(left, top, right, bottom, paint);
+    }
+
+    /**
+     * 绘制底部分割线
+     */
+    private void drawChildBottomHorizontal(View child, Canvas c, Line bottomLine) {
+        if (bottomLine.isHide()) {
+            return;
+        }
+        float leftSpan;
+        float rightSpan;
+
+        if (bottomLine.getStartSpan() <= 0) {
+            // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
+            leftSpan = -bottomLine.getWidth();
+        } else {
+            leftSpan = bottomLine.getStartSpan();
+        }
+
+        if (bottomLine.getEndSpan() <= 0) {
+            rightSpan = bottomLine.getWidth();
+        } else {
+            rightSpan = -bottomLine.getEndSpan();
+        }
+
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        float left = child.getLeft() - params.leftMargin + leftSpan;
+        float right = child.getRight() + params.rightMargin + rightSpan;
+        float top = child.getBottom() + params.bottomMargin;
+        float bottom = top + bottomLine.getWidth();
+        paint.setColor(bottomLine.getColor());
         c.drawRect(left, top, right, bottom, paint);
     }
 
@@ -191,10 +189,10 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             divider = new DividerBuilder().create();
         }
 
-        int left = divider.getLeftLine().isShow() ? ConvertUtils.dp2px(context, divider.getLeftLine().getWidth()) : 0;
-        int top = divider.getTopLine().isShow() ? ConvertUtils.dp2px(context, divider.getTopLine().getWidth()) : 0;
-        int right = divider.getRightLine().isShow() ? ConvertUtils.dp2px(context, divider.getRightLine().getWidth()) : 0;
-        int bottom = divider.getBottomLine().isShow() ? ConvertUtils.dp2px(context, divider.getBottomLine().getWidth()) : 0;
+        int left = divider.getLeftLine().isShow() ? (int) divider.getLeftLine().getWidth() : 0;
+        int top = divider.getTopLine().isShow() ? (int) divider.getTopLine().getWidth() : 0;
+        int right = divider.getRightLine().isShow() ? (int) divider.getRightLine().getWidth() : 0;
+        int bottom = divider.getBottomLine().isShow() ? (int) divider.getBottomLine().getWidth() : 0;
 
         outRect.set(left, top, right, bottom);
     }

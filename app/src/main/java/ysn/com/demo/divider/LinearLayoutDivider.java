@@ -19,20 +19,22 @@ import ysn.com.recyclerviewdivider.RecyclerViewDivider;
 public class LinearLayoutDivider extends RecyclerViewDivider {
 
     private Context context;
+    private float width;
 
     public LinearLayoutDivider(Context context) {
         super(context);
         this.context = context;
+        width = context.getResources().getDimension(R.dimen.dp5);
     }
 
     @Nullable
     @Override
     public Divider getDivider(int itemPosition) {
         Divider divider = new DividerBuilder()
-                .setRightLine(true, getColor(R.color.divider_right), 10, 0, 0)
-                .setTopLine(true, getColor(R.color.divider_top), 10, 0, 0)
-                .setLeftLine(true, getColor(R.color.divider_left), 10, 0, 0)
-                .setBottomLine(true, getColor(R.color.divider_bottom), 10, 0, 0)
+                .setRightLine(true, getColor(R.color.divider_right), width, 0, 0)
+                .setTopLine(true, getColor(R.color.divider_top), width, 0, 0)
+                .setLeftLine(true, getColor(R.color.divider_left), width, 0, 0)
+            .setBottomLine(true, getColor(R.color.divider_bottom), width, 0, 0)
                 .create();
 
         return divider;
