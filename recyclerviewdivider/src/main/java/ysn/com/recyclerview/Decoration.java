@@ -4,12 +4,12 @@ import android.support.annotation.ColorInt;
 
 /**
  * @Author yangsanning
- * @ClassName Line
- * @Description 一句话概括作用
+ * @ClassName Decoration
+ * @Description 分割线的属性
  * @Date 2019/4/28
  * @History 2019/4/28 author: description:
  */
-public class Line {
+public class Decoration {
 
     private boolean isShow;
 
@@ -23,11 +23,11 @@ public class Line {
     private float startSpan;
     private float endSpan;
 
-    public Line() {
+    public Decoration() {
         this(false, 0xff666666, 0, 0, 0);
     }
 
-    public Line(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
+    public Decoration(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
         this.isShow = isShow;
         this.color = color;
         this.width = width;

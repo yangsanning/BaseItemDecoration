@@ -5,9 +5,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 
 import ysn.com.demo.R;
-import ysn.com.recyclerview.Divider;
-import ysn.com.recyclerview.DividerBuilder;
 import ysn.com.recyclerview.BaseItemDecoration;
+import ysn.com.recyclerview.RvItemDecoration;
+import ysn.com.recyclerview.RvItemDecorationBuilder;
 
 /**
  * @Author yangsanning
@@ -28,15 +28,13 @@ public class LinearLayoutDivider extends BaseItemDecoration {
 
     @Nullable
     @Override
-    public Divider getDivider(int itemPosition) {
-        Divider divider = new DividerBuilder()
-                .setRightLine(true, getColor(R.color.divider_right), width, 0, 0)
-                .setTopLine(true, getColor(R.color.divider_top), width, 0, 0)
-                .setLeftLine(true, getColor(R.color.divider_left), width, 0, 0)
-            .setBottomLine(true, getColor(R.color.divider_bottom), width, 0, 0)
-                .create();
-
-        return divider;
+    public RvItemDecoration getRvItemDecoration(int itemPosition) {
+        return new RvItemDecorationBuilder()
+            .buildLeft(true, getColor(R.color.divider_left), width, 0, 0)
+            .buildTop(true, getColor(R.color.divider_top), width, 0, 0)
+            .buildRight(true, getColor(R.color.divider_right), width, 0, 0)
+            .buildBottom(true, getColor(R.color.divider_bottom), width, 0, 0)
+            .finish();
     }
 
     private int getColor(@ColorRes int colorRes) {

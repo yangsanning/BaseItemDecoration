@@ -28,28 +28,28 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
-            Divider divider = getDivider(((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition());
-            if (divider == null) {
+            RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition());
+            if (rvItemDecoration == null) {
                 return;
             }
             // 绘制左边分割线
-            drawLeft(child, c, divider.getLeftLine());
+            drawLeft(child, c, rvItemDecoration.getLeftDecoration());
 
             // 绘制头部分割线
-            drawTop(child, c, divider.getTopLine());
+            drawTop(child, c, rvItemDecoration.getTopDecoration());
 
             // 绘制右边分割线
-            drawRight(child, c, divider.getRightLine());
+            drawRight(child, c, rvItemDecoration.getRightDecoration());
 
             // 绘制底部分割线
-            drawBottom(child, c, divider.getBottomLine());
+            drawBottom(child, c, rvItemDecoration.getBottomDecoration());
         }
     }
 
     /**
      * 绘制左边分割线
      */
-    private void drawLeft(View child, Canvas c, Line leftLine) {
+    private void drawLeft(View child, Canvas c, Decoration leftLine) {
         if (leftLine.isHide()) {
             return;
         }
@@ -81,7 +81,7 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制头部分割线
      */
-    private void drawTop(View child, Canvas c, Line topLine) {
+    private void drawTop(View child, Canvas c, Decoration topLine) {
         if (topLine.isHide()) {
             return;
         }
@@ -113,7 +113,7 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制右边分割线
      */
-    private void drawRight(View child, Canvas c, Line rightLine) {
+    private void drawRight(View child, Canvas c, Decoration rightLine) {
         if (rightLine.isHide()) {
             return;
         }
@@ -145,7 +145,7 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制底部分割线
      */
-    private void drawBottom(View child, Canvas c, Line bottomLine) {
+    private void drawBottom(View child, Canvas c, Decoration bottomLine) {
         if (bottomLine.isHide()) {
             return;
         }
@@ -176,23 +176,23 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        Divider divider = getDivider(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
-        if (divider == null) {
-            divider = new DividerBuilder().create();
+        RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
+        if (rvItemDecoration == null) {
+            rvItemDecoration = new RvItemDecorationBuilder().finish();
         }
 
-        int left = divider.getLeftLine().isShow() ? (int) divider.getLeftLine().getWidth() : 0;
-        int top = divider.getTopLine().isShow() ? (int) divider.getTopLine().getWidth() : 0;
-        int right = divider.getRightLine().isShow() ? (int) divider.getRightLine().getWidth() : 0;
-        int bottom = divider.getBottomLine().isShow() ? (int) divider.getBottomLine().getWidth() : 0;
+        int left = rvItemDecoration.getLeftDecoration().isShow() ? (int) rvItemDecoration.getLeftDecoration().getWidth() : 0;
+        int top = rvItemDecoration.getTopDecoration().isShow() ? (int) rvItemDecoration.getTopDecoration().getWidth() : 0;
+        int right = rvItemDecoration.getRightDecoration().isShow() ? (int) rvItemDecoration.getRightDecoration().getWidth() : 0;
+        int bottom = rvItemDecoration.getBottomDecoration().isShow() ? (int) rvItemDecoration.getBottomDecoration().getWidth() : 0;
         outRect.set(left, top, right, bottom);
     }
 
     /**
-     * 通过 DividerBuilder, 自由定义你的 StyleDivider
+     * 通过 RvItemDecorationBuilder, 自由定义属于你的分割线
      *
-     * @see DividerBuilder
+     * @see RvItemDecorationBuilder
      */
     public abstract @Nullable
-    Divider getDivider(int itemPosition);
+    RvItemDecoration getRvItemDecoration(int itemPosition);
 }
