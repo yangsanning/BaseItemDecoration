@@ -1,4 +1,4 @@
-package ysn.com.recyclerviewdivider;
+package ysn.com.recyclerview;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

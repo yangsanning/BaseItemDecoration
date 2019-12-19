@@ -1,6 +1,5 @@
-package ysn.com.recyclerviewdivider;
+package ysn.com.recyclerview;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -10,19 +9,16 @@ import android.view.View;
 
 /**
  * @Author yangsanning
- * @ClassName RecyclerViewDivider
+ * @ClassName BaseItemDecoration
  * @Description RecyclerView分割线, 顺时针绘制
  * @Date 2019/4/28
  * @History 2019/4/28 author: description:
  */
-public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
-
-    private Context context;
+public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
 
     private Paint paint;
 
-    public RecyclerViewDivider(Context context) {
-        this.context = context;
+    protected BaseItemDecoration() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
     }
@@ -37,30 +33,28 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
                 return;
             }
             // 绘制左边分割线
-            drawChildLeftVertical(child, c, divider.getLeftLine());
+            drawLeft(child, c, divider.getLeftLine());
 
             // 绘制头部分割线
-            drawChildTopHorizontal(child, c, divider.getTopLine());
+            drawTop(child, c, divider.getTopLine());
 
             // 绘制右边分割线
-            drawChildRightVertical(child, c, divider.getRightLine());
+            drawRight(child, c, divider.getRightLine());
 
             // 绘制底部分割线
-            drawChildBottomHorizontal(child, c, divider.getBottomLine());
+            drawBottom(child, c, divider.getBottomLine());
         }
     }
 
     /**
      * 绘制左边分割线
      */
-    private void drawChildLeftVertical(View child, Canvas c, Line leftLine) {
+    private void drawLeft(View child, Canvas c, Line leftLine) {
         if (leftLine.isHide()) {
             return;
         }
 
         float topSpan;
-        float bottomSpan;
-
         if (leftLine.getStartSpan() <= 0) {
             // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             topSpan = -leftLine.getWidth();
@@ -68,6 +62,7 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             topSpan = leftLine.getStartSpan();
         }
 
+        float bottomSpan;
         if (leftLine.getEndSpan() <= 0) {
             bottomSpan = leftLine.getWidth();
         } else {
@@ -86,19 +81,20 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 绘制头部分割线
      */
-    private void drawChildTopHorizontal(View child, Canvas c, Line topLine) {
+    private void drawTop(View child, Canvas c, Line topLine) {
         if (topLine.isHide()) {
             return;
         }
-        float leftSpan;
-        float rightSpan;
 
+        float leftSpan;
         if (topLine.getStartSpan() <= 0) {
             //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             leftSpan = -topLine.getWidth();
         } else {
             leftSpan = topLine.getStartSpan();
         }
+
+        float rightSpan;
         if (topLine.getEndSpan() <= 0) {
             rightSpan = topLine.getWidth();
         } else {
@@ -117,20 +113,20 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 绘制右边分割线
      */
-    private void drawChildRightVertical(View child, Canvas c, Line rightLine) {
+    private void drawRight(View child, Canvas c, Line rightLine) {
         if (rightLine.isHide()) {
             return;
         }
 
         float topSpan;
-        float bottomSpan;
-
         if (rightLine.getStartSpan() <= 0) {
             //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             topSpan = -rightLine.getWidth();
         } else {
             topSpan = rightLine.getStartSpan();
         }
+
+        float bottomSpan;
         if (rightLine.getEndSpan() <= 0) {
             bottomSpan = rightLine.getWidth();
         } else {
@@ -149,13 +145,12 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     /**
      * 绘制底部分割线
      */
-    private void drawChildBottomHorizontal(View child, Canvas c, Line bottomLine) {
+    private void drawBottom(View child, Canvas c, Line bottomLine) {
         if (bottomLine.isHide()) {
             return;
         }
-        float leftSpan;
-        float rightSpan;
 
+        float leftSpan;
         if (bottomLine.getStartSpan() <= 0) {
             // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             leftSpan = -bottomLine.getWidth();
@@ -163,6 +158,7 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
             leftSpan = bottomLine.getStartSpan();
         }
 
+        float rightSpan;
         if (bottomLine.getEndSpan() <= 0) {
             rightSpan = bottomLine.getWidth();
         } else {
@@ -180,11 +176,7 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-        int itemPosition = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
-
-        Divider divider = getDivider(itemPosition);
-
+        Divider divider = getDivider(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
         if (divider == null) {
             divider = new DividerBuilder().create();
         }
@@ -193,7 +185,6 @@ public abstract class RecyclerViewDivider extends RecyclerView.ItemDecoration {
         int top = divider.getTopLine().isShow() ? (int) divider.getTopLine().getWidth() : 0;
         int right = divider.getRightLine().isShow() ? (int) divider.getRightLine().getWidth() : 0;
         int bottom = divider.getBottomLine().isShow() ? (int) divider.getBottomLine().getWidth() : 0;
-
         outRect.set(left, top, right, bottom);
     }
 

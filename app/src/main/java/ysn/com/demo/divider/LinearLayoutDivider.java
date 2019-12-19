@@ -5,9 +5,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
 
 import ysn.com.demo.R;
-import ysn.com.recyclerviewdivider.Divider;
-import ysn.com.recyclerviewdivider.DividerBuilder;
-import ysn.com.recyclerviewdivider.RecyclerViewDivider;
+import ysn.com.recyclerview.Divider;
+import ysn.com.recyclerview.DividerBuilder;
+import ysn.com.recyclerview.BaseItemDecoration;
 
 /**
  * @Author yangsanning
@@ -16,13 +16,12 @@ import ysn.com.recyclerviewdivider.RecyclerViewDivider;
  * @Date 2019/8/5
  * @History 2019/8/5 author: description:
  */
-public class LinearLayoutDivider extends RecyclerViewDivider {
+public class LinearLayoutDivider extends BaseItemDecoration {
 
     private Context context;
     private float width;
 
     public LinearLayoutDivider(Context context) {
-        super(context);
         this.context = context;
         width = context.getResources().getDimension(R.dimen.dp5);
     }

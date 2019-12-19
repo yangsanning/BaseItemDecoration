@@ -1,4 +1,4 @@
-package ysn.com.recyclerviewdivider;
+package ysn.com.recyclerview;
 
 import org.junit.Test;
 

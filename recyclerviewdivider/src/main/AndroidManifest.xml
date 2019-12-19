@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ysn.com.recyclerviewdivider" >
+    package="ysn.com.recyclerview" >
 
     <application
         android:allowBackup="true"

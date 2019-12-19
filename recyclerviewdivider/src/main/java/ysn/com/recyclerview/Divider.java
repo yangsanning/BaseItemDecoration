@@ -1,4 +1,4 @@
-package ysn.com.recyclerviewdivider;
+package ysn.com.recyclerview;
 
 /**
  * @Author yangsanning
@@ -9,10 +9,10 @@ package ysn.com.recyclerviewdivider;
  */
 public class Divider {
 
-    public Line leftLine;
-    public Line topLine;
-    public Line rightLine;
-    public Line bottomLine;
+    private Line leftLine;
+    private Line topLine;
+    private Line rightLine;
+    private Line bottomLine;
 
 
     public Divider(Line leftLine, Line topLine, Line rightLine, Line bottomLine) {
