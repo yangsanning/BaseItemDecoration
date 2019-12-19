@@ -11,28 +11,28 @@ import android.support.annotation.ColorInt;
  */
 public class RvItemDecorationBuilder {
 
-    private Decoration leftLine;
-    private Decoration topLine;
-    private Decoration rightLine;
-    private Decoration bottomLine;
+    private Decoration leftDecoration;
+    private Decoration topDecoration;
+    private Decoration rightDecoration;
+    private Decoration bottomDecoration;
 
-    public RvItemDecorationBuilder buildLeft(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
-        this.leftLine = new Decoration(isShow, color, width, startSpan, endSpan);
+    public RvItemDecorationBuilder buildLeft(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
+        this.leftDecoration = new Decoration(isShow, color, width, paddingStart, paddingEnd);
         return this;
     }
 
-    public RvItemDecorationBuilder buildTop(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
-        this.topLine = new Decoration(isShow, color, width, startSpan, endSpan);
+    public RvItemDecorationBuilder buildTop(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
+        this.topDecoration = new Decoration(isShow, color, width, paddingStart, paddingEnd);
         return this;
     }
 
-    public RvItemDecorationBuilder buildRight(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
-        this.rightLine = new Decoration(isShow, color, width, startSpan, endSpan);
+    public RvItemDecorationBuilder buildRight(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
+        this.rightDecoration = new Decoration(isShow, color, width, paddingStart, paddingEnd);
         return this;
     }
 
-    public RvItemDecorationBuilder buildBottom(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
-        this.bottomLine = new Decoration(isShow, color, width, startSpan, endSpan);
+    public RvItemDecorationBuilder buildBottom(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
+        this.bottomDecoration = new Decoration(isShow, color, width, paddingStart, paddingEnd);
         return this;
     }
 
@@ -42,11 +42,11 @@ public class RvItemDecorationBuilder {
     public RvItemDecoration finish() {
         //提供一个默认不显示的defaultLine, 防止空指针
         Decoration defaultLine = new Decoration();
-        leftLine = (leftLine != null ? leftLine : defaultLine);
-        topLine = (topLine != null ? topLine : defaultLine);
-        rightLine = (rightLine != null ? rightLine : defaultLine);
-        bottomLine = (bottomLine != null ? bottomLine : defaultLine);
-        return new RvItemDecoration(leftLine, topLine, rightLine, bottomLine);
+        leftDecoration = (leftDecoration != null ? leftDecoration : defaultLine);
+        topDecoration = (topDecoration != null ? topDecoration : defaultLine);
+        rightDecoration = (rightDecoration != null ? rightDecoration : defaultLine);
+        bottomDecoration = (bottomDecoration != null ? bottomDecoration : defaultLine);
+        return new RvItemDecoration(leftDecoration, topDecoration, rightDecoration, bottomDecoration);
     }
 }
 

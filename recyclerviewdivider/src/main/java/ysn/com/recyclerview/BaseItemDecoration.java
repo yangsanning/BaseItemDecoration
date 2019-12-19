@@ -49,33 +49,32 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制左边分割线
      */
-    private void drawLeft(View child, Canvas c, Decoration leftLine) {
-        if (leftLine.isHide()) {
+    private void drawLeft(View view, Canvas canvas, Decoration leftDecoration) {
+        if (leftDecoration.isHide()) {
             return;
         }
 
         float topSpan;
-        if (leftLine.getPaddingStart() <= 0) {
-            // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            topSpan = -leftLine.getWidth();
+        if (leftDecoration.getPaddingStart() <= 0) {
+            topSpan = -leftDecoration.getWidth();
         } else {
-            topSpan = leftLine.getPaddingStart();
+            topSpan = leftDecoration.getPaddingStart();
         }
 
         float bottomSpan;
-        if (leftLine.getPaddingEnd() <= 0) {
-            bottomSpan = leftLine.getWidth();
+        if (leftDecoration.getPaddingEnd() <= 0) {
+            bottomSpan = leftDecoration.getWidth();
         } else {
-            bottomSpan = -leftLine.getPaddingEnd();
+            bottomSpan = -leftDecoration.getPaddingEnd();
         }
 
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        float top = child.getTop() - params.topMargin + topSpan;
-        float bottom = child.getBottom() + params.bottomMargin + bottomSpan;
-        float right = child.getLeft() - params.leftMargin;
-        float left = right - leftLine.getWidth();
-        paint.setColor(leftLine.getColor());
-        c.drawRect(left, top, right, bottom, paint);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        float top = view.getTop() - params.topMargin + topSpan;
+        float bottom = view.getBottom() + params.bottomMargin + bottomSpan;
+        float right = view.getLeft() - params.leftMargin;
+        float left = right - leftDecoration.getWidth();
+        paint.setColor(leftDecoration.getColor());
+        canvas.drawRect(left, top, right, bottom, paint);
     }
 
     /**
@@ -116,65 +115,65 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制右边分割线
      */
-    private void drawRight(View child, Canvas c, Decoration rightLine) {
-        if (rightLine.isHide()) {
+    private void drawRight(View view, Canvas canvas, Decoration rightDecoration) {
+        if (rightDecoration.isHide()) {
             return;
         }
 
         float topSpan;
-        if (rightLine.getPaddingStart() <= 0) {
+        if (rightDecoration.getPaddingStart() <= 0) {
             //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            topSpan = -rightLine.getWidth();
+            topSpan = -rightDecoration.getWidth();
         } else {
-            topSpan = rightLine.getPaddingStart();
+            topSpan = rightDecoration.getPaddingStart();
         }
 
         float bottomSpan;
-        if (rightLine.getPaddingEnd() <= 0) {
-            bottomSpan = rightLine.getWidth();
+        if (rightDecoration.getPaddingEnd() <= 0) {
+            bottomSpan = rightDecoration.getWidth();
         } else {
-            bottomSpan = -rightLine.getPaddingEnd();
+            bottomSpan = -rightDecoration.getPaddingEnd();
         }
 
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        float top = child.getTop() - params.topMargin + topSpan;
-        float bottom = child.getBottom() + params.bottomMargin + bottomSpan;
-        float left = child.getRight() + params.rightMargin;
-        float right = left + rightLine.getWidth();
-        paint.setColor(rightLine.getColor());
-        c.drawRect(left, top, right, bottom, paint);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        float top = view.getTop() - params.topMargin + topSpan;
+        float bottom = view.getBottom() + params.bottomMargin + bottomSpan;
+        float left = view.getRight() + params.rightMargin;
+        float right = left + rightDecoration.getWidth();
+        paint.setColor(rightDecoration.getColor());
+        canvas.drawRect(left, top, right, bottom, paint);
     }
 
     /**
      * 绘制底部分割线
      */
-    private void drawBottom(View child, Canvas c, Decoration bottomLine) {
-        if (bottomLine.isHide()) {
+    private void drawBottom(View view, Canvas canvas, Decoration bottomDecoration) {
+        if (bottomDecoration.isHide()) {
             return;
         }
 
         float leftSpan;
-        if (bottomLine.getPaddingStart() <= 0) {
+        if (bottomDecoration.getPaddingStart() <= 0) {
             // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            leftSpan = -bottomLine.getWidth();
+            leftSpan = -bottomDecoration.getWidth();
         } else {
-            leftSpan = bottomLine.getPaddingStart();
+            leftSpan = bottomDecoration.getPaddingStart();
         }
 
         float rightSpan;
-        if (bottomLine.getPaddingEnd() <= 0) {
-            rightSpan = bottomLine.getWidth();
+        if (bottomDecoration.getPaddingEnd() <= 0) {
+            rightSpan = bottomDecoration.getWidth();
         } else {
-            rightSpan = -bottomLine.getPaddingEnd();
+            rightSpan = -bottomDecoration.getPaddingEnd();
         }
 
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        float left = child.getLeft() - params.leftMargin + leftSpan;
-        float right = child.getRight() + params.rightMargin + rightSpan;
-        float top = child.getBottom() + params.bottomMargin;
-        float bottom = top + bottomLine.getWidth();
-        paint.setColor(bottomLine.getColor());
-        c.drawRect(left, top, right, bottom, paint);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        float left = view.getLeft() - params.leftMargin + leftSpan;
+        float right = view.getRight() + params.rightMargin + rightSpan;
+        float top = view.getBottom() + params.bottomMargin;
+        float bottom = top + bottomDecoration.getWidth();
+        paint.setColor(bottomDecoration.getColor());
+        canvas.drawRect(left, top, right, bottom, paint);
     }
 
     @Override
