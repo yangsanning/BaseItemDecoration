@@ -24,25 +24,25 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            View child = parent.getChildAt(i);
-            RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) child.getLayoutParams()).getViewLayoutPosition());
+            View view = parent.getChildAt(i);
+            RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
             if (rvItemDecoration == null) {
                 return;
             }
             // 绘制左边分割线
-            drawLeft(child, c, rvItemDecoration.getLeftDecoration());
+            drawLeft(view, canvas, rvItemDecoration.getLeftDecoration());
 
             // 绘制头部分割线
-            drawTop(child, c, rvItemDecoration.getTopDecoration());
+            drawTop(view, canvas, rvItemDecoration);
 
             // 绘制右边分割线
-            drawRight(child, c, rvItemDecoration.getRightDecoration());
+            drawRight(view, canvas, rvItemDecoration.getRightDecoration());
 
             // 绘制底部分割线
-            drawBottom(child, c, rvItemDecoration.getBottomDecoration());
+            drawBottom(view, canvas, rvItemDecoration.getBottomDecoration());
         }
     }
 
@@ -55,18 +55,18 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         float topSpan;
-        if (leftLine.getStartSpan() <= 0) {
+        if (leftLine.getPaddingStart() <= 0) {
             // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             topSpan = -leftLine.getWidth();
         } else {
-            topSpan = leftLine.getStartSpan();
+            topSpan = leftLine.getPaddingStart();
         }
 
         float bottomSpan;
-        if (leftLine.getEndSpan() <= 0) {
+        if (leftLine.getPaddingEnd() <= 0) {
             bottomSpan = leftLine.getWidth();
         } else {
-            bottomSpan = -leftLine.getEndSpan();
+            bottomSpan = -leftLine.getPaddingEnd();
         }
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -81,33 +81,36 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制头部分割线
      */
-    private void drawTop(View child, Canvas c, Decoration topLine) {
-        if (topLine.isHide()) {
+    private void drawTop(View view, Canvas canvas, RvItemDecoration rvItemDecoration) {
+        Decoration topDecoration = rvItemDecoration.getTopDecoration();
+        if (topDecoration.isHide()) {
             return;
         }
 
-        float leftSpan;
-        if (topLine.getStartSpan() <= 0) {
-            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            leftSpan = -topLine.getWidth();
-        } else {
-            leftSpan = topLine.getStartSpan();
+        float leftSpan = 0;
+        Decoration leftDecoration = rvItemDecoration.getLeftDecoration();
+        if (leftDecoration.isShow()) {
+            leftSpan = -leftDecoration.getWidth();
+        }
+
+        if (topDecoration.getPaddingStart()>0) {
+            leftSpan += topDecoration.getPaddingStart();
         }
 
         float rightSpan;
-        if (topLine.getEndSpan() <= 0) {
-            rightSpan = topLine.getWidth();
+        if (topDecoration.getPaddingEnd() <= 0) {
+            rightSpan = topDecoration.getWidth();
         } else {
-            rightSpan = -topLine.getEndSpan();
+            rightSpan = -topDecoration.getPaddingEnd();
         }
 
-        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-        float left = child.getLeft() - params.leftMargin + leftSpan;
-        float right = child.getRight() + params.rightMargin + rightSpan;
-        float bottom = child.getTop() - params.topMargin;
-        float top = bottom - topLine.getWidth();
-        paint.setColor(topLine.getColor());
-        c.drawRect(left, top, right, bottom, paint);
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        float left = view.getLeft() - params.leftMargin + leftSpan;
+        float right = view.getRight() + params.rightMargin + rightSpan;
+        float bottom = view.getTop() - params.topMargin;
+        float top = bottom - topDecoration.getWidth();
+        paint.setColor(topDecoration.getColor());
+        canvas.drawRect(left, top, right, bottom, paint);
     }
 
     /**
@@ -119,18 +122,18 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         float topSpan;
-        if (rightLine.getStartSpan() <= 0) {
+        if (rightLine.getPaddingStart() <= 0) {
             //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             topSpan = -rightLine.getWidth();
         } else {
-            topSpan = rightLine.getStartSpan();
+            topSpan = rightLine.getPaddingStart();
         }
 
         float bottomSpan;
-        if (rightLine.getEndSpan() <= 0) {
+        if (rightLine.getPaddingEnd() <= 0) {
             bottomSpan = rightLine.getWidth();
         } else {
-            bottomSpan = -rightLine.getEndSpan();
+            bottomSpan = -rightLine.getPaddingEnd();
         }
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
@@ -151,18 +154,18 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
         }
 
         float leftSpan;
-        if (bottomLine.getStartSpan() <= 0) {
+        if (bottomLine.getPaddingStart() <= 0) {
             // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
             leftSpan = -bottomLine.getWidth();
         } else {
-            leftSpan = bottomLine.getStartSpan();
+            leftSpan = bottomLine.getPaddingStart();
         }
 
         float rightSpan;
-        if (bottomLine.getEndSpan() <= 0) {
+        if (bottomLine.getPaddingEnd() <= 0) {
             rightSpan = bottomLine.getWidth();
         } else {
-            rightSpan = -bottomLine.getEndSpan();
+            rightSpan = -bottomLine.getPaddingEnd();
         }
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();

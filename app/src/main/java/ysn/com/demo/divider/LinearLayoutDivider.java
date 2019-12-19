@@ -30,7 +30,7 @@ public class LinearLayoutDivider extends BaseItemDecoration {
     @Override
     public RvItemDecoration getRvItemDecoration(int itemPosition) {
         return new RvItemDecorationBuilder()
-            .buildLeft(true, getColor(R.color.divider_left), width, 0, 0)
+            .buildLeft(true, getColor(R.color.divider_left), width*2, 0, 0)
             .buildTop(true, getColor(R.color.divider_top), width, 0, 0)
             .buildRight(true, getColor(R.color.divider_right), width, 0, 0)
             .buildBottom(true, getColor(R.color.divider_bottom), width, 0, 0)

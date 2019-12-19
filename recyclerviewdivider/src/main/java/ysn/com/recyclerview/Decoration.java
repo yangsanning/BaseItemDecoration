@@ -16,39 +16,40 @@ public class Decoration {
     private int color;
 
     private float width;
+
     /**
-     * startSpan,分割线起始的padding（水平方向左为start，垂直方向上为start）
-     * endSpan,分割线尾部的padding（水平方向右为end，垂直方向下为end）
+     * paddingStart: 分割线起始的padding(水平方向左为start，垂直方向上为start)
+     * paddingEnd: 分割线尾部的padding(水平方向右为end，垂直方向下为end)
      */
-    private float startSpan;
-    private float endSpan;
+    private float paddingStart;
+    private float paddingEnd;
 
     public Decoration() {
         this(false, 0xff666666, 0, 0, 0);
     }
 
-    public Decoration(boolean isShow, @ColorInt int color, float width, float startSpan, float endSpan) {
+    public Decoration(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
         this.isShow = isShow;
         this.color = color;
         this.width = width;
-        this.startSpan = startSpan;
-        this.endSpan = endSpan;
+        this.paddingStart = paddingStart;
+        this.paddingEnd = paddingEnd;
     }
 
-    public float getStartSpan() {
-        return startSpan;
+    public float getPaddingStart() {
+        return paddingStart;
     }
 
-    public void setStartSpan(float startSpan) {
-        this.startSpan = startSpan;
+    public void setPaddingStart(float paddingStart) {
+        this.paddingStart = paddingStart;
     }
 
-    public float getEndSpan() {
-        return endSpan;
+    public float getPaddingEnd() {
+        return paddingEnd;
     }
 
-    public void setEndSpan(float endSpan) {
-        this.endSpan = endSpan;
+    public void setPaddingEnd(float paddingEnd) {
+        this.paddingEnd = paddingEnd;
     }
 
     public boolean isShow() {
