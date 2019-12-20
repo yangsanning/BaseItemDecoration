@@ -138,20 +138,8 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        float leftSpan;
-        if (bottomDecoration.getPaddingStart() <= 0) {
-            // 上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            leftSpan = -bottomDecoration.getWidth();
-        } else {
-            leftSpan = bottomDecoration.getPaddingStart();
-        }
-
-        float rightSpan;
-        if (bottomDecoration.getPaddingEnd() <= 0) {
-            rightSpan = bottomDecoration.getWidth();
-        } else {
-            rightSpan = -bottomDecoration.getPaddingEnd();
-        }
+        float leftSpan = bottomDecoration.getPaddingStart();
+        float rightSpan = -bottomDecoration.getPaddingEnd();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
         float left = view.getLeft() - params.leftMargin + leftSpan;
