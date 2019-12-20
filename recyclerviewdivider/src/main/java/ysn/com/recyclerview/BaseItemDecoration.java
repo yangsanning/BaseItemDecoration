@@ -86,22 +86,8 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
             return;
         }
 
-        float leftSpan = 0;
-        Decoration leftDecoration = rvItemDecoration.getLeftDecoration();
-        if (leftDecoration.isShow()) {
-            leftSpan = -leftDecoration.getWidth();
-        }
-
-        if (topDecoration.getPaddingStart()>0) {
-            leftSpan += topDecoration.getPaddingStart();
-        }
-
-        float rightSpan;
-        if (topDecoration.getPaddingEnd() <= 0) {
-            rightSpan = topDecoration.getWidth();
-        } else {
-            rightSpan = -topDecoration.getPaddingEnd();
-        }
+        float leftSpan = topDecoration.getPaddingStart();
+        float rightSpan = -topDecoration.getPaddingEnd();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
         float left = view.getLeft() - params.leftMargin + leftSpan;
