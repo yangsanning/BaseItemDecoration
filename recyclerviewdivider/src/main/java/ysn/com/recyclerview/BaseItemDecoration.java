@@ -36,7 +36,7 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
             drawLeft(view, canvas, rvItemDecoration.getLeftDecoration());
 
             // 绘制头部分割线
-            drawTop(view, canvas, rvItemDecoration);
+            drawTop(view, canvas, rvItemDecoration.getTopDecoration());
 
             // 绘制右边分割线
             drawRight(view, canvas, rvItemDecoration.getRightDecoration());
@@ -49,39 +49,27 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制左边分割线
      */
-    private void drawLeft(View view, Canvas canvas, Decoration leftDecoration) {
-        if (leftDecoration.isHide()) {
+    private void drawLeft(View view, Canvas canvas, Decoration decoration) {
+        if (decoration.isHide()) {
             return;
         }
 
-        float topSpan;
-        if (leftDecoration.getPaddingStart() <= 0) {
-            topSpan = -leftDecoration.getWidth();
-        } else {
-            topSpan = leftDecoration.getPaddingStart();
-        }
-
-        float bottomSpan;
-        if (leftDecoration.getPaddingEnd() <= 0) {
-            bottomSpan = leftDecoration.getWidth();
-        } else {
-            bottomSpan = -leftDecoration.getPaddingEnd();
-        }
+        float topSpan = decoration.getPaddingStart();
+        float bottomSpan = -decoration.getPaddingEnd();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
         float top = view.getTop() - params.topMargin + topSpan;
         float bottom = view.getBottom() + params.bottomMargin + bottomSpan;
         float right = view.getLeft() - params.leftMargin;
-        float left = right - leftDecoration.getWidth();
-        paint.setColor(leftDecoration.getColor());
+        float left = right - decoration.getWidth();
+        paint.setColor(decoration.getColor());
         canvas.drawRect(left, top, right, bottom, paint);
     }
 
     /**
      * 绘制头部分割线
      */
-    private void drawTop(View view, Canvas canvas, RvItemDecoration rvItemDecoration) {
-        Decoration topDecoration = rvItemDecoration.getTopDecoration();
+    private void drawTop(View view, Canvas canvas, Decoration topDecoration) {
         if (topDecoration.isHide()) {
             return;
         }
@@ -101,32 +89,20 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
     /**
      * 绘制右边分割线
      */
-    private void drawRight(View view, Canvas canvas, Decoration rightDecoration) {
-        if (rightDecoration.isHide()) {
+    private void drawRight(View view, Canvas canvas, Decoration decoration) {
+        if (decoration.isHide()) {
             return;
         }
 
-        float topSpan;
-        if (rightDecoration.getPaddingStart() <= 0) {
-            //上下左右默认分割线的两头都出头一个分割线的宽度，避免十字交叉的时候，交叉点是空白
-            topSpan = -rightDecoration.getWidth();
-        } else {
-            topSpan = rightDecoration.getPaddingStart();
-        }
-
-        float bottomSpan;
-        if (rightDecoration.getPaddingEnd() <= 0) {
-            bottomSpan = rightDecoration.getWidth();
-        } else {
-            bottomSpan = -rightDecoration.getPaddingEnd();
-        }
+        float topSpan = decoration.getPaddingStart();
+        float bottomSpan = -decoration.getPaddingEnd();
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
         float top = view.getTop() - params.topMargin + topSpan;
         float bottom = view.getBottom() + params.bottomMargin + bottomSpan;
         float left = view.getRight() + params.rightMargin;
-        float right = left + rightDecoration.getWidth();
-        paint.setColor(rightDecoration.getColor());
+        float right = left + decoration.getWidth();
+        paint.setColor(decoration.getColor());
         canvas.drawRect(left, top, right, bottom, paint);
     }
 
