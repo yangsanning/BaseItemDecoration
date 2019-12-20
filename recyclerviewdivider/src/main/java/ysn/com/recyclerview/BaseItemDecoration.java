@@ -10,7 +10,7 @@ import android.view.View;
 /**
  * @Author yangsanning
  * @ClassName BaseItemDecoration
- * @Description RecyclerView分割线, 顺时针绘制
+ * @Description RecyclerView分割线, 顺时针绘制 (默认四角留白, 如有需要自行通过padding填充)
  * @Date 2019/4/28
  * @History 2019/4/28 author: description:
  */
@@ -28,7 +28,8 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = parent.getChildAt(i);
-            RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
+            int itemPosition = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
+            RvItemDecoration rvItemDecoration = getRvItemDecoration(itemPosition);
             if (rvItemDecoration == null) {
                 return;
             }
@@ -128,7 +129,8 @@ public abstract class BaseItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        RvItemDecoration rvItemDecoration = getRvItemDecoration(((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition());
+        int itemPosition = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
+        RvItemDecoration rvItemDecoration = getRvItemDecoration(itemPosition);
         if (rvItemDecoration == null) {
             rvItemDecoration = new RvItemDecorationBuilder().finish();
         }

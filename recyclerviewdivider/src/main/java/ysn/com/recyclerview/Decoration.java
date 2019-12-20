@@ -18,14 +18,26 @@ public class Decoration {
     private float width;
 
     /**
-     * paddingStart: 分割线起始的padding(水平方向左为start，垂直方向上为start)
-     * paddingEnd: 分割线尾部的padding(水平方向右为end，垂直方向下为end)
+     * paddingStart: 分割线起始的padding (水平方向左为start，垂直方向上为start)
+     * paddingEnd: 分割线尾部的padding (水平方向右为end，垂直方向下为end)
      */
     private float paddingStart;
     private float paddingEnd;
 
     public Decoration() {
         this(false, 0xff666666, 0, 0, 0);
+    }
+
+    public Decoration(int color, float width) {
+        this(true, color, width);
+    }
+
+    public Decoration(boolean isShow, int color, float width) {
+        this(isShow, color, width, 0, 0);
+    }
+
+    public Decoration(int color, float width, float paddingStart, float paddingEnd) {
+        this(true, color, width, paddingStart, paddingEnd);
     }
 
     public Decoration(boolean isShow, @ColorInt int color, float width, float paddingStart, float paddingEnd) {
