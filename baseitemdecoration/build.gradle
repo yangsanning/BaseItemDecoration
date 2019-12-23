@@ -3,17 +3,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.yangsanning'
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION
+    compileSdkVersion rootProject.ext.version.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion MIN_SDK_VERSION
-        targetSdkVersion TARGET_SDK_VERSION
-
-        versionCode VERSION_CODE
-        versionName VERSION_NAME
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        minSdkVersion rootProject.ext.version.minSdkVersion
+        targetSdkVersion rootProject.ext.version.targetSdkVersion
+        versionCode rootProject.ext.version.versionCode
+        versionName rootProject.ext.version.versionName
     }
 
     buildTypes {
@@ -22,12 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'com.android.support:appcompat-v7:' + SUPPORT_LIBRARY_VERSION
-    implementation 'com.android.support:recyclerview-v7:' + SUPPORT_LIBRARY_VERSION
+    implementation rootProject.ext.supportLibs
 }
